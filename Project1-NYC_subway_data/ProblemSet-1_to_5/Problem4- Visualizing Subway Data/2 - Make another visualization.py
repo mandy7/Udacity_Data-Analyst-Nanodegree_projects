@@ -42,10 +42,9 @@ def plot_weather_data(turnstile_weather):
     subset, about 1/3 of the actual data in the turnstile_weather dataframe.
     '''
 
-    df = turnstile_weather.groupby("UNIT", as_index = False).sum() #sum data by unit
-    df = df.iloc[0:30, :] #select 30 unit for visualization
-    plot = ggplot(aes(x = "UNIT", y = "ENTRIESn_hourly"), data = df) #plot figure
-    plot = plot + geom_histogram(aes(x= "UNIT", weight = "ENTRIESn_hourly"), fill = "blue", stat = "bar") # your code here
-    plot = plot + ggtitle("Histogram of ridership by UNIT")
-    return plot
+    data = turnstile_weather
+    plot = ggplot(data, aes('ENTRIESn_hourly',fill='rain')) + geom_histogram(binwidth=250,alpha=0.8) +\
+       scale_x_continuous(limits=(0,7000)) + scale_y_continuous(limits=(0,9000)) +\
+       xlab("\nNo. of Entries") + ylab("Occurences\n") + ggtitle("Occurences of No. of Entries for Rainy (Blue) and Non-Rainy (Red) Days \n")
+    return plot 
 
