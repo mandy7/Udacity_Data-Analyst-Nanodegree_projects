@@ -1,15 +1,10 @@
-Python 3.4.2 (v3.4.2:ab2c023a9432, Oct  5 2014, 20:42:22) 
-[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
-Type "copyright", "credits" or "license()" for more information.
->>> WARNING: The version of Tcl/Tk (8.5.9) in use may be unstable.
-Visit http://www.python.org/download/mac/tcltk/ for current information.
-
->>> # -*- coding: utf-8 -*-
+ -*- coding: utf-8 -*-
 
 import numpy as np
-import pandas
+import pandas as pd
 import scipy
 import statsmodels.api as sm
+from datetime import datetime
 
 """
 In this optional exercise, you should complete the function called 
@@ -50,10 +45,38 @@ runs faster.
 """
 
 def predictions(weather_turnstile):
-    Y = weather_turnstile ["ENTRIESn_hourly"] 
-    X = weather_turnstile ["EXITSn_hourly"]
-    model= sm.OLS( Y, X ).fit()   #select stastical model
-    prediction = model.predict(X) 
+    dummy_units = pd.get_dummies(weather_turnstile['UNIT'], prefix='unit')
+    
+    weather_turnstile['WEEKDAYn'] = weather_turnstile['DATEn'].apply(lambda x: datetime.strptime(x, "%Y-%m-%d").weekday())
+    weather_turnstile['HOLIDAYn'] = weather_turnstile['WEEKDAYn'].apply(lambda x: 1 if x in [5, 10, 25] else 0)
+    weather_turnstile['WEEKDAYn'] = weather_turnstile['WEEKDAYn'].apply(lambda x: 0 if x in [5, 6] else 1)
+    weather_turnstile['PEAKn'] = weather_turnstile['Hour'].apply(lambda x: 1 if x in [9, 12, 13, 16, 17, 20, 21, 0] else 0)
+    
+    
+    #X = weather_turnstile[['rain', 'precipi', 'Hour', 'meantempi', 
+    #                      'meanpressurei', 'meanwindspdi', 'meandewpti']].join(dummy_units)
+    
+    X = weather_turnstile[['rain', 'Hour', 'PEAKn', 'WEEKDAYn', 'HOLIDAYn',
+                           'maxtempi', 'mintempi']].join(dummy_units)
+                          
+    y = weather_turnstile['ENTRIESn_hourly']
+    X = sm.add_constant(X)
+    est = sm.OLS(y, X).fit()
+    prediction = est.predict().tolist()
     return prediction
 
+def compute_r_squared(data, predictions):
+    SST = ((data-np.mean(data))**2).sum()
+    SSReg = ((predictions-np.mean(data))**2).sum()
+    r_squared = SSReg / SST
+
+    return r_squared
+
+if __name__ == "__main__":
+    input_filename = "turnstile_data_master_with_weather.csv"
+    turnstile_master = pd.read_csv(input_filename)
+    predicted_values = predictions(turnstile_master)
+    r_squared = compute_r_squared(turnstile_master['ENTRIESn_hourly'], predicted_values) 
+
+    print r_squared
 
