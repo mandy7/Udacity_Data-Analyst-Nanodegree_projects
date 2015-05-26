@@ -35,8 +35,10 @@ def plot_weather_data(turnstile_weather):
     However, due to the limitation of our Amazon EC2 server, we are giving you a random
     subset, about 1/3 of the actual data in the turnstile_weather dataframe.
     '''
-    grouped = turnstile_weather.groupby("UNIT").sum().reset_index()
-    plot = ggplot(grouped, aes(x = grouped.index , y = "EXITSn_hourly")) + geom_point(color = 'green') + geom_line(color = 'black') + ggtitle('Ridership by UNIT') + xlab("unit") 
+    df = turnstile_weather.groupby("Hour", as_index = False).sum() #sum data by Hours
+    plot = ggplot(aes(x = "Hour", y = "ENTRIESn_hourly"), data = df) #plot figure
+    plot = plot + geom_histogram(aes(x= "Hour", weight = "ENTRIESn_hourly"), fill = "pink", stat = "bar") # your code here
+    plot = plot + ggtitle("Histogram of ridership by Hour")
     return plot
 
 
