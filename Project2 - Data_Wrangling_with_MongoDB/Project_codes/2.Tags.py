@@ -4,10 +4,7 @@ import xml.etree.ElementTree as ET
 import pprint
 import re
 
-import os
-#Set the proper current working directory
-os.getcwd()
-os.chdir('C:/Users/madua/Project2')
+
 
 #create the three regular expressions we are checking for
 lower = re.compile(r'^([a-z]|_)*$')
@@ -24,7 +21,7 @@ def key_type(element, keys):
             keys['problemchars'] += 1
             #print out any values with problematic characters
             #print element            
-            print element.attrib['k']            
+            print (element.attrib['k'])            
         else:
             keys['other'] += 1                 
     
@@ -39,11 +36,14 @@ def process_map(filename):
         element.clear()
     return keys
 
-keys = process_map('GVRD - Vancouver - OSM XML Raw.osm')
+keys = process_map('newdelhi.osm')
 pprint.pprint(keys)
 
-#RESULT
-#bitcoin=yes
-#contact"email
-#Will ignore these two problemchars in 5. data.py
-#{'lower': 574368, 'lower_colon': 448514, 'other': 44552, 'problemchars': 2}
+#Ladies Readymade Garments
+#popular name
+#popular name
+#popular name
+#popular name
+#{'lower': 635243, 'lower_colon': 7104, 'other': 239, 'problemchars': 5}
+#Will ignore these 5 problemchars in 5. data.py
+
