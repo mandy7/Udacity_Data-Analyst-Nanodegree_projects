@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Project 4 - Explore and Summarize Data</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Project 4 - Explore and Summarize Data</h1>
+
+<p>This is an R Markdown document.
+I am hereby penning down my thoughts / reflections about this project and my code.</p>
+
+<p>To start with, I am an ardent football fan with most of my free time spent either playing football or watching football. If not this, then I play PC football game - FIFA.</p>
+
+<p>Therefore, I have decided to use FIFA15 data as my working data.</p>
+
+<p><strong>About the dataset</strong></p>
+
+<ul>
+<li>Number of observations - 12,236</li>
+<li>Number of Variables - 60</li>
+<li><p><em>Variables description are as follows</em></p></li>
+<li><p>$ Club.Name</p></li>
+<li><p>$ Nation        </p></li>
+<li><p>$ League        </p></li>
+<li><p>$ SearchName    = Player name</p></li>
+<li><p>$ position      = playing position</p></li>
+<li><p>$ Rating        = FIFA rating (out of 100)</p></li>
+<li><p>$ Category      </p></li>
+<li><p>$ Skill         = skill rating</p></li>
+<li><p><strong>next few variables are to measure skillsets</strong></p></li>
+<li><p>$ awr           </p></li>
+<li><p>$ dwr           </p></li>
+<li><p>$ PreferredFoot </p></li>
+<li><p>$ weakfoot      </p></li>
+<li><p>$ Height        </p></li>
+<li><p>$ CommonName    </p></li>
+<li><p>$ statsid       </p></li>
+<li><p>$ Position      </p></li>
+<li><p>$ Rare          </p></li>
+<li><p>$ Attr1         </p></li>
+<li><p>$ Acceleration  </p></li>
+<li><p>$ SprintSpeed   </p></li>
+<li><p>$ Attr2         </p></li>
+<li><p>$ Positioning   </p></li>
+<li><p>$ Finishing     </p></li>
+<li><p>$ ShotPower     </p></li>
+<li><p>$ LongShot      </p></li>
+<li><p>$ Volleys       </p></li>
+<li><p>$ Penalties     </p></li>
+<li><p>$ Attr3         </p></li>
+<li><p>$ TactAware     </p></li>
+<li><p>$ Vision        </p></li>
+<li><p>$ ShortPass     </p></li>
+<li><p>$ LongPass      </p></li>
+<li><p>$ Curve         </p></li>
+<li><p>$ Crossing      </p></li>
+<li><p>$ FKAcc         </p></li>
+<li><p>$ Attr4         </p></li>
+<li><p>$ BallControl   </p></li>
+<li><p>$ Dribbling     </p></li>
+<li><p>$ Balance       </p></li>
+<li><p>$ Agility       </p></li>
+<li><p>$ Reactions     </p></li>
+<li><p>$ Attr5         </p></li>
+<li><p>$ Marking       </p></li>
+<li><p>$ Interceptions </p></li>
+<li><p>$ StandingTackle</p></li>
+<li><p>$ SlideTackle    </p></li>
+<li><p>$ HeadingAcc     </p></li>
+<li><p>$ Attr6          </p></li>
+<li><p>$ Strength       </p></li>
+<li><p>$ Jumping        </p></li>
+<li><p>$ Aggression     </p></li>
+<li><p>$ Stamina        </p></li>
+<li><p>$ Potential      </p></li>
+<li><p>$ GKDiving       </p></li>
+<li><p>$ GKHandling     </p></li>
+<li><p>$ GKKicking      </p></li>
+<li><p>$ GKPositioning  </p></li>
+<li><p>$ GKReflexes     </p></li>
+<li><p>$ playerID      </p></li>
+<li><p>$ statsid.1     </p></li>
+</ul>
+
+<p><strong>Univariate Exploration</strong></p>
+
+<p>Let&#39;s set the working directory and import our dataset.</p>
+
+<pre><code>#Setting working directory
+setwd(&quot;/Users/madua/Desktop&quot;)
+#Fetching the data
+fifa &lt;- read.csv(&quot;fifa15.csv&quot;)
+
+str(fifa)
+summary(fifa)
+</code></pre>
+
+<p>As depicted by structure of this dataset, we have both categorical and numeric variables. Therefore there is no need to add extra categorical variable</p>
+
+<p>Let&#39;s find if there are any duplicates in our dataset</p>
+
+<pre><code>#Finding duplicates
+duplicates &lt;- duplicated(fifa$SearchName)
+duplicate_players &lt;- fifa[duplicates==TRUE,]
+duplicate_players$SearchName
+</code></pre>
+
+<p>Let&#39;s see position wise distribution of duplicate players</p>
+
+<pre><code>table(duplicate_players$position)
+</code></pre>
+
+<p>In football, its common that we have same players playing on different positions, depending on tactics. We can use below mentioned code to establish this fact</p>
+
+<pre><code>realduplicates &lt;- duplicated(fifa$playerID)
+realduplicate_players &lt;- fifa[realduplicates==TRUE,]
+realduplicate_players$SearchName
+</code></pre>
+
+<p>Again distributing this position wise</p>
+
+<pre><code>table(realduplicate_players$position)
+</code></pre>
+
+<p>Verifying our hypothesis of multi-position players by using example of player named - Arjen Robben</p>
+
+<pre><code>multipositions_players &lt;- realduplicate_players
+Robben &lt;- multipositions_players[multipositions_players$SearchName == &quot;Arjen Robben&quot;,]
+table(Robben$position)
+</code></pre>
+
+<p>This dataset has multiple leagues, so lets plot a barchart to see number of players belonging to different leagues</p>
+
+<pre><code>plot(fifa$League,type=&quot;h&quot;,horiz=T)
+</code></pre>
+
+<p><strong>Univariate Analysis</strong></p>
+
+<p><strong>What is the structure of your dataset?</strong></p>
+
+<p>There are 12,236 players in the dataset with 60 features (country, league, club, playing position, rating, skills etc). </p>
+
+<p><strong>Other observations:</strong></p>
+
+<p>There are 237 rows of data involving same name players
+Out of these, 87 players are same i.e. they are multi-position players so repeated
+Leagues of England has highest number of players with almost double than second most populous league
+Spain&#39;s league - Liga BBVA has the highest mean rating of 95 - perhaps an indicator of good quality of league</p>
+
+<p><strong>What is/are the main feature(s) of interest in your dataset?</strong></p>
+
+<p>The main features in the data set are various skills of a player and his playing position. I???d like to determine which skills are important to predict a rating of a player. At the same time it is interesting to observe which league has attacking mindset or a defensive mindset</p>
+
+<p><strong>Did you create any new variables from existing variables in the dataset?</strong></p>
+
+<p>I created a variable - &ldquo;Mindset&rdquo; to evaluate players&#39; intent whether he prefers attack or defence, basis his playing position</p>
+
+<p><strong>Bivariate Plots</strong></p>
+
+<p>Football is a sport of 11 players, which means there are atleast 11 different positions for any single player. Now I will create a new column called <strong>&ldquo;Mindset&rdquo;</strong> which represents mindset of a player basis his playing position i.e. <strong>Attack</strong> if he is playing in advanced position else <strong>Defence</strong></p>
+
+<pre><code>#creating mindset of players i.e. attack or defence
+library(data.table)
+DT &lt;- data.table(fifa)
+DT[,mindset := ifelse(position %in% c(&quot;CAM&quot;, &quot;CF&quot;,  &quot;CM&quot;, &quot;LF&quot;,  &quot;LM&quot;,  &quot;LW&quot;, &quot;RF&quot;,  &quot;RM&quot;, &quot;RW&quot;,  &quot;ST&quot;), &quot;Attack&quot;, &quot;Defence&quot;)]
+fifa &lt;- DT
+</code></pre>
+
+<p>In this dataset we have multiple leagues, belonging to different countries. Let&#39;s narrow down our data to top 5 leagues of the world (which belongs to England, France, Germany, Italy and Spain)</p>
+
+<pre><code>#Selecting top 5 leagues
+library(dplyr)
+Big5 &lt;- c(&quot;Barclays Premier League&quot;,&quot;Ligue 1&quot;,&quot;Bundesliga&quot;,&quot;TIM Serie A&quot;,&quot;Liga BBVA&quot; )
+Topleagues &lt;- filter(fifa, League %in% Big5)
+str(Topleagues)
+</code></pre>
+
+<p>Let us plot mindset of the players belonging to these top 5 leagues. By doing this we will be able to understand that which nation&#39;s league plays more offensive football comparing to others.</p>
+
+<pre><code>#visualizing mindset grouped by leagues
+d &lt;- data.frame(column1 = Topleagues$League, column2 = Topleagues$mindset, Ratings = Topleagues$Rating)
+require(lattice)
+barchart(Ratings ~ column1,groups = column2, d,auto.key = list(columns = 3))
+</code></pre>
+
+<p>We have data corresponding to prefferred foot of a player as well. I would like to take an opportunity to create a Mosaic plot for the players belonging to different positions</p>
+
+<pre><code>#Position wise preferred foot
+totals = table(fifa$PreferredFoot,fifa$position)
+
+#creating custom palette
+mypal &lt;- c(&quot;black&quot;,   &quot;red&quot; ,    &quot;green3&quot; , &quot;blue&quot;   , &quot;cyan&quot;  ,  &quot;magenta&quot; ,&quot;yellow&quot;  ,&quot;gray&quot;,&quot;pink&quot;, &quot;purple&quot;, &quot;springgreen&quot;, &quot;magenta&quot;, &quot;orange&quot;, &quot;violet&quot;, &quot;tan&quot;, &quot;tomato&quot;, &quot;cyan2&quot;, &quot;thistle&quot;, &quot;sienna&quot;, &quot;plum4&quot; )
+
+
+#creating Mosaic plot
+mosaicplot(totals,main=&quot;Positions wise preferred foot&quot;,xlab=&quot;PreferredFoot&quot;,ylab=&quot;Positions&quot;,color = mypal)
+</code></pre>
+
+<p>We had already seen players in various positions segmented by foot. </p>
+
+<p>Now just to satiate the curiousity, whether right footed players are rare or left footed. So Let&#39;s take a look at rare players segmented by Preferred foot.</p>
+
+<pre><code>#Rare players segmented by foot
+library(vcd)
+attach(fifa)
+counts &lt;- table(PreferredFoot,Rare)
+spine(counts, main = &quot;Rare players segmented by foot&quot;)
+</code></pre>
+
+<p>Almost both sets of players have similar rare players among them with Right footed players more on a higher rare side</p>
+
+<p>#Segregating players based on their playing position
+wingers &lt;- fifa[fifa$position == c(&ldquo;LW&rdquo;,&ldquo;RW&rdquo;),]
+mid &lt;- fifa[fifa$position == c(&ldquo;CM&rdquo;,&ldquo;LM&rdquo;,&ldquo;RM&rdquo;),]
+attacking_mid &lt;- fifa[fifa$position == &ldquo;CAM&rdquo;,]
+defensive_mid &lt;- fifa[fifa$position == &ldquo;CDM&rdquo;,]
+def &lt;- fifa[fifa$position == c(&ldquo;CB&rdquo;,&ldquo;LB&rdquo;,&ldquo;RB&rdquo;,&ldquo;LWB&rdquo;,&ldquo;RWB&rdquo;),]
+gk &lt;- fifa[fifa$position == &ldquo;GK&rdquo;,]
+striker &lt;- fifa[fifa$position == c(&ldquo;ST&rdquo;,&ldquo;CF&rdquo;),]</p>
+
+<p>To establish relationship between striker and some of the main skills and league, I had plot following graph -</p>
+
+<pre><code>pairs(~Rating + Finishing + ShotPower + Positioning + League, data = striker, main = &quot;Basic skills of Striker&quot;)
+</code></pre>
+
+<p>Similarly smooth plot to confirm or deny whether strength is an important aspect for Defender</p>
+
+<pre><code>#Smooth plot to relate strength and rating of a defender
+with(def,smoothScatter(Rating, Strength , main=&quot;Scatterplot of Strength vs. Defender Rating&quot;))
+</code></pre>
+
+<p>Before moving to multivariate segment, I would quicly like to explore few more datapoints such as corelation between certain fields and some more observations</p>
+
+<pre><code>f &lt;- fifa
+#to find maximum rating within each league
+aggregate(Rating~League, f, max)
+#to find maximum rating within each league, segmented by position
+aggregate(Rating~League + position, f, max)
+</code></pre>
+
+<p>There can be a possibility that player with good sprint speed can have a good rating. Let&#39;s establish corelation between these two parameters</p>
+
+<pre><code>#corelation between Sprintspeed and rating
+cor(f$SprintSpeed,f$Rating)
+</code></pre>
+
+<p>As we can see, there is not much co-relation between the two factors. Guess it would take much more to be a good player thanjust a good speed
+Let&#39;s explore what it takes to be a good goalkeeper</p>
+
+<pre><code>cor.test(gk$Rating,gk$GKHandling)
+</code></pre>
+
+<p>So as depicted by result, a good handling capability can make up a good goalkeeper</p>
+
+<p>Following few commands are to create a table and have view of some of the parameters - </p>
+
+<pre><code>table(f$League)
+table(f$Nation,f$League)
+table(f$position,f$Club.Name)
+summary(table(f$League))
+footpos &lt;- table(f$position,f$PreferredFoot)
+prop.table(footpos, margin=1)
+</code></pre>
+
+<p><strong>Bivariate Analysis</strong></p>
+
+<p><strong>Talk about some of the relationships you observed in this part of the investigation. How did the feature(s) of interest vary with other features in the dataset?</strong>
+For each position, there are certain skills which are strongly corelated and thus define the rating of a player. For e.g Striker is defined by his finishing skills as well as his shot power. For goalkeepers it is the handling of ball which strongly corelates with their rating. At the same time, against common notion, strength is not an important factor for defender </p>
+
+<p><strong>Multivariate plots</strong></p>
+
+<p>As we have seen, there are multiple skills on which rating of a player is dependent. Hence let&#39;s focus on key skills for each position e.g. finishing for striker, tackling for defender etc.</p>
+
+<p>Also to make plot less cluttered, I&#39;ll be analysing english league i.e. Barclays premier league only</p>
+
+<pre><code>#Analyzing Barclays Premier League
+BPL &lt;- fifa[fifa$League == &quot;Barclays Premier League&quot;,]
+
+#Collecting data for certain skills only
+BPL_refined &lt;- BPL[,c(1,5,20,23,24,30,38,49,55)]
+team_wise_mean &lt;- aggregate(.~Club.Name,data = BPL_refined,mean)
+</code></pre>
+
+<p>Let&#39;s create star plot to visualize team wise mean value for 7 top skills</p>
+
+<pre><code>#Creating star plot
+require(grDevices)
+stars(team_wise_mean[, 3:9], locations = c(0, 0), radius = FALSE, key.loc = c(0, 0), main = &quot;Players skills&quot;, lty = 2)
+</code></pre>
+
+<p>It&#39;s worth to watch how rating and other skills are co-related for a player</p>
+
+<pre><code>#Selecting ratings and few key skills for English league players
+BPL_updated &lt;- BPL[,c(6,20,23,24,30,38,49,55)]
+</code></pre>
+
+<pre><code>#Creating correlogram for skills of English league players
+library(corrgram)
+corrgram(BPL_refined, order=TRUE, lower.panel=panel.shade,upper.panel=panel.pie, text.panel=panel.txt,main=&quot;Correlogram of BPL players parameters&quot;)
+</code></pre>
+
+<p><strong>Modeling</strong></p>
+
+<p>Before ending my analysis, I would like to create two models - GLM to predict any new player ratings basis his skills value and clustering to form cluster of similiar type players</p>
+
+<pre><code>#linear modeling
+lm(Rating~GKHandling,gk)
+gkmodel &lt;- lm(Rating~GKHandling,gk)
+lm(Rating~GKHandling + GKDiving + GKReflexes,gk)
+lm(Rating~GKHandling + GKDiving + I(GKReflexes^2),gk)
+gkmodel2 &lt;- lm(Rating~GKHandling + GKDiving + I(GKReflexes^2),gk)
+gkmodel3 &lt;- update(gkmodel2, ~.+GKPositioning,gk)
+newgk &lt;- data.frame(GKHandling = c(88,76,58))
+newgk$predictions &lt;- predict(gkmodel,newgk,interval = &quot;prediction&quot;)
+newgk
+</code></pre>
+
+<p>In the above example, I created a model to predict Goalkeeper rating basis on value of some of skills specific to Goalkeeper, that are - handling, positioning, reflexes and Diving</p>
+
+<p>It&#39;s always an interesting task to unearth players which are similar to other top players. So following is the clustering model to cluster top strikers, midfielders, defenders and goalkeepers. By top, I mean the ones having overall rating of 80 and above</p>
+
+<pre><code>#clustering
+top &lt;- f[which(f$Rating &gt; 79),]
+
+st &lt;- top[top$position == &quot;ST&quot;,]
+st2 &lt;- st[,c(4,17:58)]
+stgrp &lt;- hclust(dist(st2))
+plot(stgrp,labels = st2$SearchName)
+
+cb &lt;- top[top$position == &quot;CB&quot;,]
+cb2 &lt;- cb[,c(4,17:58)]
+cbgrp &lt;- hclust(dist(cb2))
+plot(cbgrp,labels = cb2$SearchName)
+
+cm &lt;- top[top$position == &quot;CM&quot;,]
+cm2 &lt;- cm[,c(4,17:58)]
+cmgrp &lt;- hclust(dist(cm2))
+plot(cmgrp,labels = cm2$SearchName)
+
+gk &lt;- top[top$position == &quot;GK&quot;,]
+gk2 &lt;- gk[,c(4,17:58)]
+lmgrp &lt;- hclust(dist(gk2))
+plot(gkgrp,labels = gk2$SearchName)
+</code></pre>
+
+<p><strong>OPTIONAL: Did you create any models with your dataset? Discuss the strengths and limitations of your model</strong></p>
+
+<p>Yes, I have created a linear model for Goalkeepers. Verifying the data for the same this model appears to  be efficient. The use of this model can be extended to other positions as well. Such model forms the basis of predicting possible ratings of underdeveloped talent.</p>
+
+<p>In addition, I&#39;ve also created clustering of top players and judging the players&#39; playing type and clusters, I guess decent job had been done</p>
+
+<p><strong>Final Plots and Summary</strong></p>
+
+<p><strong>Plot 1</strong></p>
+
+<pre><code>#Position wise preferred foot
+totals = table(fifa$PreferredFoot,fifa$position)
+
+#creating custom palette
+mypal &lt;- c(&quot;black&quot;,   &quot;red&quot; ,    &quot;green3&quot; , &quot;blue&quot;   , &quot;cyan&quot;  ,  &quot;magenta&quot; ,&quot;yellow&quot;  ,&quot;gray&quot;,&quot;pink&quot;, &quot;purple&quot;, &quot;springgreen&quot;, &quot;magenta&quot;, &quot;orange&quot;, &quot;violet&quot;, &quot;tan&quot;, &quot;tomato&quot;, &quot;cyan2&quot;, &quot;thistle&quot;, &quot;sienna&quot;, &quot;plum4&quot; )
+
+
+#creating Mosaic plot
+mosaicplot(totals,main=&quot;Positions wise preferred foot&quot;,xlab=&quot;PreferredFoot&quot;,ylab=&quot;Positions&quot;,color = mypal)
+</code></pre>
+
+<p><strong>Description 1</strong></p>
+
+<p>This plot gives an interesting insight into players foot and their playing position. When forming a team (virtually or in reality), players foot become an important aspect as basis on which inside run, cross type, tackle etc. decided</p>
+
+<p><strong>Plot 2</strong></p>
+
+<pre><code>#Relation between trikers skills
+pairs(~Rating + Finishing + ShotPower + Positioning + League, data = striker, main = &quot;Basic skills of Striker&quot;)
+</code></pre>
+
+<p><strong>Description 2</strong></p>
+
+<p>This plot gives us a hint to l0ok out for certain skills of striker in order to measure his ratings</p>
+
+<p><strong>Plot 3</strong></p>
+
+<pre><code>#to understand current and potential ratings for England&#39;s clubs
+englishclubs_ratings &lt;- fifa[fifa$Club.Name == c(&quot;Arsenal&quot;, &quot;Aston Villa&quot;, &quot;Burnley&quot;, &quot;Chelsea&quot;, &quot;Crystal Palace&quot;, &quot;Everton&quot;, &quot;Hull City&quot;, &quot;Leicester City&quot;, &quot;Liverpool&quot;  , &quot;Manchester City&quot; , &quot;Manchester United&quot;,    &quot;Newcastle United&quot;,     &quot;Queens Park Rangers&quot;,  &quot;Southampton&quot;,          &quot;Stoke City&quot; , &quot;Sunderland&quot;,           &quot;Swansea City&quot;,         &quot;Tottenham Hotspur&quot;,    &quot;West Bromwich Albion&quot;, &quot;West Ham United&quot; ),c(1,6,53)]
+team_wise_ratings_mean &lt;- aggregate(.~Club.Name,data = englishclubs_ratings,mean)
+
+#creating custom palette
+mypal &lt;- c(&quot;black&quot;,   &quot;red&quot; ,    &quot;green3&quot; , &quot;blue&quot;   , &quot;cyan&quot;  ,  &quot;magenta&quot; ,&quot;yellow&quot;  ,&quot;gray&quot;,&quot;pink&quot;, &quot;purple&quot;, &quot;springgreen&quot;, &quot;magenta&quot;, &quot;orange&quot;, &quot;violet&quot;, &quot;tan&quot;, &quot;tomato&quot;, &quot;cyan2&quot;, &quot;thistle&quot;, &quot;sienna&quot;, &quot;plum4&quot; )
+
+#creating scatterplot to understand current mean rating of a team and mean potential rating for English clubs
+plot(team_wise_ratings_mean$Rating,team_wise_ratings_mean$Potential,pch =16, col = mypal)
+legend(&#39;topleft&#39;,paste(team_wise_ratings_mean$Club.Name),col=mypal,pch=16)
+</code></pre>
+
+<p><strong>Description 3</strong></p>
+
+<p>This plot give us an insight into mean ratings of currently playing 20 teams in barclays premier league and their potential ratings. While selecting a team initially in the game, one can opt for team with higher potential rating thus having a brighter chances of better future players</p>
+
+<p><strong>Reflection</strong>
+This dataset is of details about players in  FIFA 15 game. I started by understanding the individual variables in the data set, and then I explored interesting questions and leads as I continued to make observations on plots. </p>
+
+<p>Initially there were few challenges -</p>
+
+<ul>
+<li>Duplicate values</li>
+<li>Some NAs</li>
+</ul>
+
+<p>Post data cleansing, it became an interesting task to analyse this data step by step</p>
+
+<p>I started with complete data, followed by observing top 5 leagues, then exploring the data position wise and finaly sticking to one particular league -  Barclays premier league </p>
+
+<p>This top down approach helped me in better understanding the data</p>
+
+<p>During this exploratory analysis, I created linear model and did clustering of players as well</p>
+
+</body>
+
+</html>
+
