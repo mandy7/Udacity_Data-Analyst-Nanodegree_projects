@@ -81,7 +81,7 @@ Therefore, I have decided to use FIFA15 data as my working data.
 
 Let's set the working directory and import our dataset.
 
-```
+``` {r summarize dataset}
 #Setting working directory
 setwd("/Users/madua/Desktop")
 #Fetching the data
@@ -95,7 +95,7 @@ As depicted by structure of this dataset, we have both categorical and numeric v
 
 Let's find if there are any duplicates in our dataset
 
-```
+```{r duplicates}
 #Finding duplicates
 duplicates <- duplicated(fifa$SearchName)
 duplicate_players <- fifa[duplicates==TRUE,]
@@ -103,33 +103,33 @@ duplicate_players$SearchName
 ```
 
 Let's see position wise distribution of duplicate players
-```
+```{r position-duplicate}
 table(duplicate_players$position)
 ```
 
 In football, its common that we have same players playing on different positions, depending on tactics. We can use below mentioned code to establish this fact
 
-```
+```{r multi-position players}
 realduplicates <- duplicated(fifa$playerID)
 realduplicate_players <- fifa[realduplicates==TRUE,]
 realduplicate_players$SearchName
 ```
 Again distributing this position wise
-```
+```{r position}
 table(realduplicate_players$position)
 ```
 
 Verifying our hypothesis of multi-position players by using example of player named - Arjen Robben
 
-```
+```{r verify multiosition}
 multipositions_players <- realduplicate_players
 Robben <- multipositions_players[multipositions_players$SearchName == "Arjen Robben",]
 table(Robben$position)
 ```
 
 This dataset has multiple leagues, so lets plot a barchart to see number of players belonging to different leagues
-```
-plot(fifa$League,type="h",horiz=T)
+```{r league wise players plot}
+plot(fifa$League,type="h",horiz=T, main = "League wise players division")
 ```
 
 
@@ -160,7 +160,7 @@ I created a variable - "Mindset" to evaluate players' intent whether he prefers 
 
 Football is a sport of 11 players, which means there are atleast 11 different positions for any single player. Now I will create a new column called **"Mindset"** which represents mindset of a player basis his playing position i.e. **Attack** if he is playing in advanced position else **Defence**
 
-```
+```{r mindset}
 #creating mindset of players i.e. attack or defence
 library(data.table)
 DT <- data.table(fifa)
@@ -170,7 +170,7 @@ fifa <- DT
 
 In this dataset we have multiple leagues, belonging to different countries. Let's narrow down our data to top 5 leagues of the world (which belongs to England, France, Germany, Italy and Spain)
 
-```
+```{r top 5 leagues}
 #Selecting top 5 leagues
 library(dplyr)
 Big5 <- c("Barclays Premier League","Ligue 1","Bundesliga","TIM Serie A","Liga BBVA" )
@@ -180,16 +180,16 @@ str(Topleagues)
 
 Let us plot mindset of the players belonging to these top 5 leagues. By doing this we will be able to understand that which nation's league plays more offensive football comparing to others.
 
-```
+```{r mindset plot}
 #visualizing mindset grouped by leagues
 d <- data.frame(column1 = Topleagues$League, column2 = Topleagues$mindset, Ratings = Topleagues$Rating)
 require(lattice)
-barchart(Ratings ~ column1,groups = column2, d,auto.key = list(columns = 3))
+barchart(Ratings ~ column1,groups = column2, d,auto.key = list(columns = 3),main = "Mindset wise count of players belonging to top 5")
 ```
 
 We have data corresponding to prefferred foot of a player as well. I would like to take an opportunity to create a Mosaic plot for the players belonging to different positions
 
-```
+```{r preferred foot plot}
 #Position wise preferred foot
 totals = table(fifa$PreferredFoot,fifa$position)
 
@@ -205,7 +205,7 @@ We had already seen players in various positions segmented by foot.
 
 Now just to satiate the curiousity, whether right footed players are rare or left footed. So Let's take a look at rare players segmented by Preferred foot.
 
-```
+```{r rare players-preferred foot plot}
 #Rare players segmented by foot
 library(vcd)
 attach(fifa)
@@ -215,6 +215,7 @@ spine(counts, main = "Rare players segmented by foot")
 
 Almost both sets of players have similar rare players among them with Right footed players more on a higher rare side
 
+```{r position-players}
 #Segregating players based on their playing position
 wingers <- fifa[fifa$position == c("LW","RW"),]
 mid <- fifa[fifa$position == c("CM","LM","RM"),]
@@ -223,22 +224,23 @@ defensive_mid <- fifa[fifa$position == "CDM",]
 def <- fifa[fifa$position == c("CB","LB","RB","LWB","RWB"),]
 gk <- fifa[fifa$position == "GK",]
 striker <- fifa[fifa$position == c("ST","CF"),]
+```
 
 To establish relationship between striker and some of the main skills and league, I had plot following graph -
 
-```
+```{r striker skill plot}
 pairs(~Rating + Finishing + ShotPower + Positioning + League, data = striker, main = "Basic skills of Striker")
 ```
 
 Similarly smooth plot to confirm or deny whether strength is an important aspect for Defender
 
-```
+```{r smooth plot}
 #Smooth plot to relate strength and rating of a defender
 with(def,smoothScatter(Rating, Strength , main="Scatterplot of Strength vs. Defender Rating"))
 ```
 Before moving to multivariate segment, I would quicly like to explore few more datapoints such as corelation between certain fields and some more observations
 
-```
+```{r maximum rating}
 f <- fifa
 #to find maximum rating within each league
 aggregate(Rating~League, f, max)
@@ -247,14 +249,16 @@ aggregate(Rating~League + position, f, max)
 ```
 
 There can be a possibility that player with good sprint speed can have a good rating. Let's establish corelation between these two parameters
-```
+
+```{r corelation}
 #corelation between Sprintspeed and rating
 cor(f$SprintSpeed,f$Rating)
 ```
 
 As we can see, there is not much co-relation between the two factors. Guess it would take much more to be a good player thanjust a good speed
 Let's explore what it takes to be a good goalkeeper
-```
+
+```{r corelation2}
 cor.test(gk$Rating,gk$GKHandling)
 ```
 
@@ -262,7 +266,7 @@ So as depicted by result, a good handling capability can make up a good goalkeep
 
 Following few commands are to create a table and have view of some of the parameters - 
 
-```
+```{r additional queries}
 table(f$League)
 table(f$Nation,f$League)
 table(f$position,f$Club.Name)
@@ -283,17 +287,18 @@ As we have seen, there are multiple skills on which rating of a player is depend
 
 Also to make plot less cluttered, I'll be analysing english league i.e. Barclays premier league only
 
-```
+```{r analyzing BPL}
 #Analyzing Barclays Premier League
 BPL <- fifa[fifa$League == "Barclays Premier League",]
 
 #Collecting data for certain skills only
-BPL_refined <- BPL[,c(1,5,20,23,24,30,38,49,55)]
+BPL_refined <- subset(BPL,,c(1,5,20,23,24,30,38,49,55))
 team_wise_mean <- aggregate(.~Club.Name,data = BPL_refined,mean)
 ```
 
 Let's create star plot to visualize team wise mean value for 7 top skills
-```
+
+```{r star plot}
 #Creating star plot
 require(grDevices)
 stars(team_wise_mean[, 3:9], locations = c(0, 0), radius = FALSE, key.loc = c(0, 0), main = "Players skills", lty = 2)
@@ -301,22 +306,22 @@ stars(team_wise_mean[, 3:9], locations = c(0, 0), radius = FALSE, key.loc = c(0,
 
 It's worth to watch how rating and other skills are co-related for a player
 
-```
+```{r english players}
 #Selecting ratings and few key skills for English league players
-BPL_updated <- BPL[,c(6,20,23,24,30,38,49,55)]
+BPL_updated <- subset(BPL,,c(6,20,23,24,30,38,49,55))
 ```
 
-```
+```{r correlogram}
 #Creating correlogram for skills of English league players
 library(corrgram)
-corrgram(BPL_refined, order=TRUE, lower.panel=panel.shade,upper.panel=panel.pie, text.panel=panel.txt,main="Correlogram of BPL players parameters")
+corrgram(BPL_updated, order=TRUE, lower.panel=panel.shade,upper.panel=panel.pie, text.panel=panel.txt,main="Correlogram of BPL players parameters")
 ```
 
 **Modeling**
 
 Before ending my analysis, I would like to create two models - GLM to predict any new player ratings basis his skills value and clustering to form cluster of similiar type players
 
-```
+```{r modeling}
 #linear modeling
 lm(Rating~GKHandling,gk)
 gkmodel <- lm(Rating~GKHandling,gk)
@@ -328,33 +333,34 @@ newgk <- data.frame(GKHandling = c(88,76,58))
 newgk$predictions <- predict(gkmodel,newgk,interval = "prediction")
 newgk
 ```
+
 In the above example, I created a model to predict Goalkeeper rating basis on value of some of skills specific to Goalkeeper, that are - handling, positioning, reflexes and Diving
 
 
 It's always an interesting task to unearth players which are similar to other top players. So following is the clustering model to cluster top strikers, midfielders, defenders and goalkeepers. By top, I mean the ones having overall rating of 80 and above
 
-```
+```{r clustering}
 #clustering
 top <- f[which(f$Rating > 79),]
 
 st <- top[top$position == "ST",]
-st2 <- st[,c(4,17:58)]
+st2 <- subset(st,,c(4,17:58))
 stgrp <- hclust(dist(st2))
 plot(stgrp,labels = st2$SearchName)
 
 cb <- top[top$position == "CB",]
-cb2 <- cb[,c(4,17:58)]
+cb2 <- subset(cb,,c(4,17:58))
 cbgrp <- hclust(dist(cb2))
 plot(cbgrp,labels = cb2$SearchName)
 
 cm <- top[top$position == "CM",]
-cm2 <- cm[,c(4,17:58)]
+cm2 <- subset(cm,,c(4,17:58))
 cmgrp <- hclust(dist(cm2))
 plot(cmgrp,labels = cm2$SearchName)
 
 gk <- top[top$position == "GK",]
-gk2 <- gk[,c(4,17:58)]
-lmgrp <- hclust(dist(gk2))
+gk2 <- subset(gk,,c(4,17:58))
+gkgrp <- hclust(dist(gk2))
 plot(gkgrp,labels = gk2$SearchName)
 ```
 
@@ -368,7 +374,7 @@ In addition, I've also created clustering of top players and judging the players
 
 **Plot 1**
 
-```
+```{r plot1}
 #Position wise preferred foot
 totals = table(fifa$PreferredFoot,fifa$position)
 
@@ -386,27 +392,27 @@ This plot gives an interesting insight into players foot and their playing posit
 
 **Plot 2**
 
-```
+```{r plot2}
 #Relation between trikers skills
 pairs(~Rating + Finishing + ShotPower + Positioning + League, data = striker, main = "Basic skills of Striker")
 ```
 
 **Description 2**
 
-This plot gives us a hint to l0ok out for certain skills of striker in order to measure his ratings
+This plot gives us a hint to look out for certain skills of striker in order to measure his ratings
 
 **Plot 3**
 
-```
+```{r plot3}
 #to understand current and potential ratings for England's clubs
-englishclubs_ratings <- fifa[fifa$Club.Name == c("Arsenal", "Aston Villa", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Hull City", "Leicester City", "Liverpool"  , "Manchester City" , "Manchester United",    "Newcastle United",     "Queens Park Rangers",  "Southampton",          "Stoke City" , "Sunderland",           "Swansea City",         "Tottenham Hotspur",    "West Bromwich Albion", "West Ham United" ),c(1,6,53)]
-team_wise_ratings_mean <- aggregate(.~Club.Name,data = englishclubs_ratings,mean)
+englishclubs <- subset(BPL,,c(1,6,53))
+team_wise_ratings_mean <- aggregate(.~Club.Name,data = englishclubs,mean)
 
 #creating custom palette
 mypal <- c("black",   "red" ,    "green3" , "blue"   , "cyan"  ,  "magenta" ,"yellow"  ,"gray","pink", "purple", "springgreen", "magenta", "orange", "violet", "tan", "tomato", "cyan2", "thistle", "sienna", "plum4" )
 
 #creating scatterplot to understand current mean rating of a team and mean potential rating for English clubs
-plot(team_wise_ratings_mean$Rating,team_wise_ratings_mean$Potential,pch =16, col = mypal)
+plot(team_wise_ratings_mean$Rating,team_wise_ratings_mean$Potential,pch =16, col = mypal,main = "English clubs current vs. potential ratings")
 legend('topleft',paste(team_wise_ratings_mean$Club.Name),col=mypal,pch=16)
 ```
 
@@ -417,6 +423,7 @@ This plot give us an insight into mean ratings of currently playing 20 teams in 
 
 
 **Reflection**
+
 This dataset is of details about players in  FIFA 15 game. I started by understanding the individual variables in the data set, and then I explored interesting questions and leads as I continued to make observations on plots. 
 
 Initially there were few challenges -
