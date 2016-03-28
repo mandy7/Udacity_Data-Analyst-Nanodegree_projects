@@ -66,8 +66,9 @@ Sticking to Leagues only, let's see mean of the ratings across various leagues
 # Plotting League wise mean ratings of players 
 leaguerating <- aggregate(fifadata[, 6], list(fifadata$League), mean)
 colnames(leaguerating) <- c("League", "Mean rating")
-par(mar=c(8,4,4,8))
-x <- plot(leaguerating,cex.names = .6, cex.axis = 0.4,las = 2)
+par(mar=c(10,4,4,10))
+x <- plot(leaguerating,cex.names = 0.8, cex.axis = 0.5, las = 2, xlab = "")
+(mtext(side = 1, text = "League", line = 6))
 ```
 
 x <- barplot(table(mtcars$cyl), xaxt="n")
@@ -154,7 +155,8 @@ barplot(futureratings, main = "Potential rating wise player distribution",
 Overlapping Current & future ratings
 ```{r potentialratingoverrating, echo=FALSE}
 # Plotting Rating wise distribution of the players 
-barplot(totalratings, xaxt ="n", yaxt = "n", main = "Rating wise player distribution",
+barplot(totalratings, xaxt ="n", yaxt = "n", 
+        main = "Rating wise player distribution",
         xlab = "Ratings(out of 100)", ylab = "Number of players", 
         col = "blue")
 par(new = "TRUE")
@@ -751,7 +753,8 @@ lm(Rating~GKHandling + GKDiving + GKReflexes,gk)
 lm(Rating~GKHandling + GKDiving + I(GKReflexes^2),gk)
 gkmodel2 <- lm(Rating~GKHandling + GKDiving + I(GKReflexes^2),gk)
 gkmodel3 <- update(gkmodel2, ~.+GKPositioning,gk)
-newgk <- data.frame(GKHandling = c(88,76,68), GKDiving = c(75,66,58), GKReflexes = c(82,75,71), GKPositioning = c(84,77,70))
+newgk <- data.frame(GKHandling = c(88,76,68), GKDiving = c(75,66,58), 
+                    GKReflexes = c(82,75,71), GKPositioning = c(84,77,70))
 newgk$predictions <- predict(gkmodel3,newgk,interval = "prediction")
 newgk
 ```
