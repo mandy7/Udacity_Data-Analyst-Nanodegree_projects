@@ -46,9 +46,14 @@ It would be interesting to see the distribution of players across various league
 ```{r playerdistribution, echo=FALSE}
 # Plotting League wise distribution of the players
 totalplayers <- table(fifadata$League)
-graph1 <- barplot(totalplayers,cex.names = .4, cex.axis = 0.6, las = 2)
+par(mar=c(8,4,4,8))
+graph1 <- barplot(totalplayers,cex.names = .4, cex.axis = 0.4, las = 2)
 mtext(side = 1, at = graph1, text = totalplayers, line = -10, cex = 0.4)
 ```
+
+lab <- as.vector(c(fifadata$League))
+text(seq(1, 37, by=1),par("usr")[3] - 0.2, labels = lab, srt = 45, pos = 1, xpd = TRUE)
+
 
 * The top 3 leagues (basis players distribution) - Football league championship,
 Barclays Premier League (England) and TIM Seris A (Italy). 
@@ -61,8 +66,16 @@ Sticking to Leagues only, let's see mean of the ratings across various leagues
 # Plotting League wise mean ratings of players 
 leaguerating <- aggregate(fifadata[, 6], list(fifadata$League), mean)
 colnames(leaguerating) <- c("League", "Mean rating")
-plot(leaguerating,cex.names = .4, cex.axis = 0.8, las = 2,horiz = T)
+par(mar=c(8,4,4,8))
+x <- plot(leaguerating,cex.names = .6, cex.axis = 0.4,las = 2)
 ```
+
+x <- barplot(table(mtcars$cyl), xaxt="n")
+labs <- paste(names(table(fifadata$League)), "")
+text(cex=1, x=x-.25, y=-1.25, labs, xpd=TRUE, srt=45, pos=2)
+
+p2 + theme(axis.title.x = element_text(face="bold", colour="#990000", size=20),
+           axis.text.x  = element_text(angle=90, vjust=0.5, size=12))
 
 * Interestingly, Ukraninan league has the highest mean rating - around 75
 * Major leagues (English, Spanish, French, Italian) are between 70-75
@@ -87,7 +100,9 @@ Let's distribute the players accordingly
 ```{r playingfoot, echo=FALSE}
 # Plotting Prefferred foot wise distribution of the players 
 foottype <- table(fifadata$PreferredFoot)
-graph4 <- barplot(foottype,cex.names = .8, cex.axis = 0.8, las = 2, main = "Foot wise distribution", xlab = "Preferred foot", ylab = "Players count")
+graph4 <- barplot(foottype,cex.names = .8, cex.axis = 0.8, las = 2, 
+                  main = "Foot wise distribution", xlab = "Preferred foot", 
+                  ylab = "Players count")
 mtext(side = 1, at = graph4, text = foottype, line = -6)
 ```
 
@@ -103,6 +118,7 @@ graph5 <- barplot(positiontype, main = "Position wise player distribution",
                   cex.axis = 0.8, las = 2)
 mtext(side = 1, at = graph5, text = positiontype, line = -6, cex = 0.6)
 ```
+
 
 This plot showcased clear picture across various postions - 
 
@@ -138,7 +154,7 @@ barplot(futureratings, main = "Potential rating wise player distribution",
 Overlapping Current & future ratings
 ```{r potentialratingoverrating, echo=FALSE}
 # Plotting Rating wise distribution of the players 
-barplot(totalratings, main = "Rating wise player distribution",
+barplot(totalratings, xaxt ="n", yaxt = "n", main = "Rating wise player distribution",
         xlab = "Ratings(out of 100)", ylab = "Number of players", 
         col = "blue")
 par(new = "TRUE")
@@ -146,10 +162,14 @@ par(new = "TRUE")
 barplot(futureratings, main = "Rating wise player distribution", 
         xlab = "Ratings(out of 100)", ylab = "Number of players", 
         col = "yellow3")
+par(new = "FALSE")
+
 ```
+
 
 The future ratings are slightly on the higher side, reflecting players will grow eventually
 
+summary(fifadata)
 
 **Univariate Analysis**
 
@@ -814,9 +834,12 @@ This dataset matches real world database of football players where 30% of the pl
 **Plot Two**
 ```{r AggressionVsDefendingVsPassing2, echo=FALSE, cache=FALSE}
 # Plotting role of Aggression in Defending attributes and Passing attributes
-plot_ly(data = fifadata, x = Defending.attributes, 
-        y = Passing.attributes,color = Aggression , mode = "markers")
+p <- plot_ly(data = fifadata, x = Defending.attributes, 
+        y = Passing.attributes,color = Aggression , mode = "markers") %>% 
+  layout(title = "Aggression impact")
+p
 ```
+
 
 **Why this plot** - 
 Most of the features (playing skills) of a player can be reflected in his/her game. Also the same can be proved by the statistics / ratings. For e.g. 'Finishing' is an important aspect for the striker as well overall rating of the player. However there are some aspects which wont reflect in the stats but in the playing style of the player and very well decide the fate of the match. 'Aggression' is one such factor as this can come handy at the time of snatching the ball from the opponent. However over aggressive players can commit fouls, resulting in sending off from the match. Thus selected this plot to measure how aggressiveness is related to the skills
